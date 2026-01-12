@@ -1,0 +1,16 @@
+fastapi
+sqlalchemy
+python-dotenv
+numpy
+joblib
+gunicorn
+uvicorn
+httpx
+pymysql
+pydantic[email]
+cryptography
+xgboost
+scikit-learn
+numpy
+joblib
+

@@ -87,7 +87,7 @@ def send_otp_email(to_email: str, otp: str):
         raise HTTPException(status_code=500, detail="Failed to send OTP email")
 
 # 🔹 **Endpoint: Register**
-@auth_router.post("/register")
+@auth_router.post("/register/")
 def register(user: schemas.UserCreate, db: Session = Depends(database.get_db)):
     existing_user = db.query(models.User).filter(models.User.email == user.email).first()
     if existing_user:

@@ -1,0 +1,82 @@
+version: "3.9"
+
+services:
+  authroutes_service:
+    build:
+      context: ./authroutes_service/app
+    container_name: authroutes_service
+    command: gunicorn main:app -w 4 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8000  --log-level info --access-logfile - --error-logfile -
+    restart: always
+    env_file:
+      - ./authroutes_service/app/.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    networks:
+      - backend
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
+
+  predictroutes_service:
+    build: ./predictroutes_service/app
+    container_name: predictroutes_service
+    command: gunicorn main:app -w 4 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8001  --log-level info --access-logfile - --error-logfile -
+    ports:
+      - "8001:8001"
+    env_file:
+      - ./predictroutes_service/app/.env
+    volumes:
+      - ./data:/app/data
+    restart: always
+    depends_on:
+      - authroutes_service
+    networks:
+      - backend
+
+  chatbotroutes_service:
+    build: ./chatbotroutes_service
+    container_name: chatbotroutes_service
+    command: gunicorn main:app -w 1 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8002
+    ports:
+      - "8002:8002"
+    env_file:
+      - ./chatbotroutes_service/.env
+    volumes:
+      - ./data:/app/data
+    restart: always
+    depends_on:
+      - predictroutes_service
+    networks:
+      - backend
+
+  redis:
+    image: redis:7.0
+    container_name: redis_service
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+    command: ["redis-server", "--appendonly", "yes"]
+  
+  nginx:
+    image: nginx:latest
+    container_name: nginx_gateway
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - authroutes_service
+      - predictroutes_service
+      - chatbotroutes_service
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge

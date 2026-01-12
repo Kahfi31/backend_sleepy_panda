@@ -307,7 +307,7 @@ def sync_daily_to_server(cursor):
     cursor.execute("SELECT * FROM daily WHERE synced = 0")
     unsynced_data = cursor.fetchall()
     for record in unsynced_data:
-        response = safe_post('http://103.129.148.233/api/sync_daily', json={
+        response = safe_post('http://10.0.2.2/api/sync_daily', json={
             'id': record[0],
             'email': record[2],
             'upper_pressure': record[3],
@@ -339,7 +339,7 @@ def sync_sleep_records_to_server(cursor):
     cursor.execute("SELECT * FROM sleep_records WHERE synced = 0")
     unsynced_data = cursor.fetchall()
     for record in unsynced_data:
-        response = safe_post('http://103.129.148.233/api/sync_sleep_records', json={
+        response = safe_post('http://10.0.2.2/api/sync_sleep_records', json={
             'id': record[0],
             'email': record[1],
             'sleep_time': record[2],
@@ -354,7 +354,7 @@ def sync_weekly_predictions_to_server(cursor):
     cursor.execute("SELECT * FROM weekly_predictions WHERE synced = 0")
     unsynced_data = cursor.fetchall()
     for record in unsynced_data:
-        response = safe_post('http://103.129.148.233/api/sync_weekly_predictions', json={
+        response = safe_post('http://10.0.2.2/api/sync_weekly_predictions', json={
             'id': record[0],
             'email': record[1],
             'prediction_result': record[2],
@@ -367,7 +367,7 @@ def sync_monthly_predictions_to_server(cursor):
     cursor.execute("SELECT * FROM monthly_predictions WHERE synced = 0")
     unsynced_data = cursor.fetchall()
     for record in unsynced_data:
-        response = safe_post('http://103.129.148.233/api/sync_monthly_predictions', json={
+        response = safe_post('http://10.0.2.2/api/sync_monthly_predictions', json={
             'id': record[0],
             'email': record[1],
             'prediction_result': record[2],
@@ -380,7 +380,7 @@ def sync_users_to_server(cursor):
     cursor.execute("SELECT * FROM users WHERE synced = 0")
     unsynced_data = cursor.fetchall()
     for record in unsynced_data:
-        response = safe_post('http://103.129.148.233/api/sync_users', json={
+        response = safe_post('http://10.0.2.2/api/sync_users', json={
             'id': record[0],
             'email': record[1],
             'hashed_password': record[2],
@@ -405,7 +405,7 @@ def sync_work_data_to_server(cursor):
     cursor.execute("SELECT * FROM work_data WHERE synced = 0")
     unsynced_data = cursor.fetchall()
     for record in unsynced_data:
-        response = safe_post('http://103.129.148.233/api/sync_work_data', json={
+        response = safe_post('http://10.0.2.2/api/sync_work_data', json={
             'id': record[0],
             'email': record[1],
             'quality_of_sleep': record[2],
