@@ -18,6 +18,12 @@ services:
     environment:
       REDIS_HOST: redis
       REDIS_PORT: 6379
+    environment:
+      DB_HOST: 103.16.117.175
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: Kahfi$032004
+      DB_NAME: authgemastik_db
 
 
   predictroutes_service:
@@ -35,6 +41,12 @@ services:
       - authroutes_service
     networks:
       - backend
+    environment:
+      DB_HOST: 103.16.117.175
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: Kahfi$032004
+      DB_NAME: predictgemastik_db
 
   chatbotroutes_service:
     build: ./chatbotroutes_service
@@ -80,3 +92,4 @@ services:
 networks:
   backend:
     driver: bridge
+
