@@ -398,6 +398,62 @@ def save_prediction_manual(request: schemas.SavePredictionRequest, db: Session =
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.post("/save_prediction_week")
+def save_prediction(request: schemas.SavePredictionRequestWeek, db: Session = Depends(database.get_db)):
+    try:
+        # Ambil email dan hasil prediksi dari request
+        email = request.email
+        prediction_result = request.prediction_result
+
+        # Konversi integer ke string berdasarkan mapping
+        if prediction_result in prediction_mapping:
+            prediction_enum_value = prediction_mapping[prediction_result]
+        else:
+            raise HTTPException(status_code=400, detail="Invalid prediction result")
+
+        # Simpan ke database
+        prediction = models.WeeklyPrediction(
+            email=email,
+            prediction_result=prediction_enum_value  # Simpan sebagai string enum
+        )
+        db.add(prediction)
+        db.commit()
+
+        return {"message": "Prediction saved successfully"}
+
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error saving prediction: {str(e)}")
+    
+@app.post("/save_prediction_month")
+def save_prediction_month(request: schemas.SavePredictionRequestMonth, db: Session = Depends(database.get_db)):
+    try:
+        # Ambil email dan hasil prediksi dari request
+        email = request.email
+        prediction_result = request.prediction_result
+
+        # Konversi integer ke string berdasarkan mapping
+        if prediction_result in prediction_mapping:
+            prediction_enum_value = prediction_mapping[prediction_result]
+        else:
+            raise HTTPException(status_code=400, detail="Invalid prediction result")
+
+        # Simpan ke database
+        prediction = models.MonthlyPrediction(
+            email=email,
+            prediction_result=prediction_enum_value  # Simpan sebagai string enum
+        )
+        db.add(prediction)
+        db.commit()
+
+        return {"message": "Monthly prediction saved successfully"}
+
+    except Exception as e:
+        db.rollback()
+        print(f"Exception occurred: {str(e)}")  # Debug log untuk melihat kesalahan
+        raise HTTPException(status_code=500, detail=f"Error saving monthly prediction: {str(e)}")
+
+
 @app.post("/save-sleep-record/")
 async def save_sleep_record(sleep_data: schemas.SleepData, db: Session = Depends(get_db)):
     sleep_time = sleep_data.sleep_time
