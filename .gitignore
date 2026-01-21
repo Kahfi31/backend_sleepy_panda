@@ -1,7 +1,13 @@
-# Ignore all env files
+# Ignore real env files
 .env
+.env.*
 **/.env
-.env*
+**/.env.*
+
+# BUT allow env example
+!.env.example
+!**/.env.example
+
 
 # Node
 node_modules/
