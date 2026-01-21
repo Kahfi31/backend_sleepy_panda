@@ -18,7 +18,7 @@ services:
     environment:
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      DB_HOST: 103.16.117.175
+      DB_HOST: host.docker.internal
       DB_PORT: 3306
       DB_USER: root
       DB_PASSWORD: Kahfi$032004
@@ -41,7 +41,7 @@ services:
     networks:
       - backend
     environment:
-      DB_HOST: 103.16.117.175
+      DB_HOST: host.docker.internal
       DB_PORT: 3306
       DB_USER: root
       DB_PASSWORD: Kahfi$032004
